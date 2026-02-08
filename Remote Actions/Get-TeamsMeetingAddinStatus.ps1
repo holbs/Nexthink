@@ -168,15 +168,15 @@ If ($DoNotDisableAddinList) {
         Switch -Wildcard ($Key.PSPath) {
             "Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER*" {
                 # Write to log
-                Write-Output "- TMAUserInDoNotDisableAddinList: $($DoNotDisableAddinListMap[[int]$Key.'TeamsAddin.FastConnect'])"
+                Write-Output "- TMAUserDoNotDisableAddinList: $($DoNotDisableAddinListMap[[int]$Key.'TeamsAddin.FastConnect'])"
                 # Write to Nexthink data layer
-                [Nxt]::WriteOutputString("TMAUserInDoNotDisableAddinList", $DoNotDisableAddinListMap[[int]$Key.'TeamsAddin.FastConnect'])
+                [Nxt]::WriteOutputString("TMAUserDoNotDisableAddinList", $DoNotDisableAddinListMap[[int]$Key.'TeamsAddin.FastConnect'])
             }
             "Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE*" {
                 # Write to log
-                Write-Output "- TMAMachineInDoNotDisableAddinList: $($DoNotDisableAddinListMap[[int]$Key.'TeamsAddin.FastConnect'])"
+                Write-Output "- TMAMachineDoNotDisableAddinList: $($DoNotDisableAddinListMap[[int]$Key.'TeamsAddin.FastConnect'])"
                 # Write to Nexthink data layer
-                [Nxt]::WriteOutputString("TMAMachineInDoNotDisableAddinList", $DoNotDisableAddinListMap[[int]$Key.'TeamsAddin.FastConnect'])
+                [Nxt]::WriteOutputString("TMAMachineDoNotDisableAddinList", $DoNotDisableAddinListMap[[int]$Key.'TeamsAddin.FastConnect'])
             }
         }
     }
