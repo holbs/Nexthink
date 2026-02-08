@@ -99,8 +99,8 @@ If ($MSTeams -and $TMA) {
         $true {
             Try {
                 # Running as the system account, so change the values in HKEY_LOCAL_MACHINE
-                Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect" -Name "LoadBehavior" -Value 3 -ErrorAction Stop
-                Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList" -Name "TeamsAddin.FastConnect" -Value 1 -Type DWord -ErrorAction Stop
+                New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect" -Name "LoadBehavior" -Value 3 -Force -ErrorAction Stop
+                New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList" -Name "TeamsAddin.FastConnect" -Value 1 -Type DWord -Force -ErrorAction Stop
             } Catch {
                 # If there was an error, return the error message to Nexthink
                 $nxtSession['ExitCode'] = 1
@@ -111,8 +111,8 @@ If ($MSTeams -and $TMA) {
         $false {
             Try {
                 # Running as a user account, so change the values in HKEY_CURRENT_USER
-                Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect" -Name "LoadBehavior" -Value 3 -ErrorAction Stop
-                Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList" -Name "TeamsAddin.FastConnect" -Value 1 -Type DWord -ErrorAction Stop
+                New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect" -Name "LoadBehavior" -Value 3 -Force -ErrorAction Stop
+                New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList" -Name "TeamsAddin.FastConnect" -Value 1 -Type DWord -Force -ErrorAction Stop
             } Catch {
                 # If there was an error, return the error message to Nexthink
                 $nxtSession['ExitCode'] = 1
