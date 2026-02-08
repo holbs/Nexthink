@@ -98,7 +98,14 @@ If ($MSTeams -and $TMA) {
     Switch ($IsSystemAccount) {
         $true {
             Try {
-                # Running as the system account, so change the values in HKEY_LOCAL_MACHINE
+                # Running as the system account; ensure the registry keys exist
+                If (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect")) {
+                    New-Item -Path "HKLM:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect" -Force -ErrorAction Stop | Out-Null
+                }
+                If (-not (Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList")) {
+                    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList" -Force -ErrorAction Stop | Out-Null
+                }
+                # Set LoadBehavior to 3 to ensure the add-in is loaded and set DoNotDisableAddinList to 1 to prevent Outlook disabling the add-in due to crashes
                 New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect" -Name "LoadBehavior" -Value 3 -Force -ErrorAction Stop
                 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList" -Name "TeamsAddin.FastConnect" -Value 1 -Type DWord -Force -ErrorAction Stop
             } Catch {
@@ -111,6 +118,13 @@ If ($MSTeams -and $TMA) {
         $false {
             Try {
                 # Running as a user account, so change the values in HKEY_CURRENT_USER
+                If (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect")) {
+                    New-Item -Path "HKCU:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect" -Force -ErrorAction Stop | Out-Null
+                }
+                If (-not (Test-Path -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList")) {
+                    New-Item -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList" -Force -ErrorAction Stop | Out-Null
+                }
+                # Set LoadBehavior to 3 to ensure the add-in is loaded and set DoNotDisableAddinList to 1 to prevent Outlook disabling the add-in due to crashes
                 New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Office\Outlook\Addins\TeamsAddin.FastConnect" -Name "LoadBehavior" -Value 3 -Force -ErrorAction Stop
                 New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Resiliency\DoNotDisableAddinList" -Name "TeamsAddin.FastConnect" -Value 1 -Type DWord -Force -ErrorAction Stop
             } Catch {
